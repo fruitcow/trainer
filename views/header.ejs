@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+        <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+		 <script type="text/javascript" src="/javascripts/notify.min.js"></script>
+        <link href="/stylesheets/font-awesome.min.css"
+        rel="stylesheet" type="text/css">
+        <link href="/stylesheets/bootstrap.css"
+        rel="stylesheet" type="text/css">
+		<script>
+		
+		
+		
+		</script>
+		<style>
+		
+		</style>
+    </head>
+    <title><%= title %></title>
+    <body>
+        <div class="navbar navbar-default navbar-static-top ">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><span>健身助手</span></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+				<nav>
+				<% if(user) { %>
+                    <ul class="nav navbar-nav navbar-right">
+					     <li>
+                            <a><%= user.name%></a>
+                        </li>
+                        <li class="active">
+						
+                            <a href="/">首頁</a>
+                        </li>
+                        <li>
+                            <a href="/schedule">課表</a>
+                        </li>
+						
+                        <li>
+                            <a href="./logout">登出</a>
+                        </li>
+						<% if(user.name=="admin") { %>
+						<li>
+						<a href="./admin">管理頁面</a>
+						</li>
+						<%}%>
+                    </ul>
+					<% } else { %>
+					      <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <a href="/">首頁</a>
+                        </li>
+                        <li>
+                            <a href="/contact">聯絡我們</a>
+                        </li>
+                        <li>
+                            <a href="./login">登入</a>
+                        </li>
+                    </ul>
+					<% } %>
+					</nav>
+                </div>
+            </div>
+        </div>
+		<article>
+		<% if (success) { %>
+  <div><%= success %></div>
+<% } %>
+<% if (error) { %>
+  <div><%= error %></div>
+<% } %>
+</article>

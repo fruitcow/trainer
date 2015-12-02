@@ -1,0 +1,31 @@
+<%- include header %>
+<div class=section>
+<table>
+<% list.forEach(function(list) {%>
+
+             <tr>
+			 <p><td><h1><%= list.name %></h1><td></p>
+             <td><h2><%= list.email %></h2></td>
+			 <p><td>電話:<%= list.phone %></td></p>
+             <td><input type="button" class="btn btn-success"  value="編輯課表"  onclick="javascript:location.href='/admin/schedule/<%= list._id %>'"></td>      
+</tr>			 
+<% }); %>
+</table>
+</body>
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

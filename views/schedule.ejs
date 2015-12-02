@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+<head>
+<title><%= title %></title>
+<meta charset='utf-8'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
+        rel="stylesheet" type="text/css">
+        <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css"
+        rel="stylesheet" type="text/css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/javascripts/jquery.ui.touch-punch.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="javascripts/rwd-table.min.js"></script>
+
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">	
+<link rel="stylesheet" href="stylesheets/rwd-table.min.css">
+
+
+		
+<style type="text/css">
+.tg  { border-collapse:collapse;border-spacing:0;border-color:#ccc; }
+.tg td{font-family:Arial, sans-serif;font-size:12px;padding:20px 20px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+.tg th{font-family:Arial, sans-serif;font-size:12px;font-weight:normal;padding:20px 20px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+.tg .tg-zapm{background-color:#f9f9f9;text-align:right}
+.tg .tg-4eph{background-color:#f9f9f9}
+.drag {
+    width: 50px;
+    height: 50px;
+    line-height: 70px;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 10px;
+    float: left;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 12px;
+}
+#dragbasic{
+
+position : fixed;
+top : 50px;
+bottom : 1px;
+
+right :20px;
+
+
+
+}
+
+
+</style>
+
+
+
+<script>
+
+function save(){
+	var tablec = $("#stable").clone().html();
+	var data = {"content":tablec}
+	$.ajax({
+			url:'/schedule',
+			type:'POST',
+			data:data,
+			success:function(data,status){
+          if(status == 'success'){
+              location.href='/schedule';
+          }
+      },
+      error:function(data,status){
+           if(status == "error"){
+              location.href='/schedule'
+           }
+       }
+   }); 
+  }
+$(function(){
+var $box = $(".tg-4eph");
+var $drag = $( ".drag" );
+
+    $drag.draggable({ cancel: "a.ui-icon", 
+      revert: "invalid", 
+      containment: "document",
+      helper: "clone",
+      cursor: "move"});
+
+$box.droppable({
+ drop: function( event, ui ) {
+ var $put = $(ui.draggable);
+ 
+ $(this).find("p")
+		.html($put.text());
+
+		
+		
+		
+}
+
+});
+
+	     });
+</script>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-static-top ">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><span>健身助手</span></a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+				<nav>
+				<% if(user) { %>
+				
+                    <ul class="nav navbar-nav navbar-right">
+					<li>
+                            <a><%= user.name%></a>
+                        </li>
+                        <li class="active">
+                            <a href="/">首頁</a>
+                        </li>
+                         <li>
+                            <a href="/schedule">課表</a>
+						
+                        <li>
+                            <a href="./logout">登出</a>
+                        </li>
+						<% if(user.name=="admin") { %>
+						<li>
+						<a href="./admin">管理頁面</a>
+						</li>
+						<%}%>
+                    </ul>
+					<% } else { %>
+					      <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <a href="/">首頁</a>
+                        </li>
+                        <li>
+                            <a href="#">聯絡我</a>
+                        </li>
+                        <li>
+                            <a href="./login">登入</a>
+                        </li>
+                    </ul>
+					<% } %>
+					</nav>
+                </div>
+            </div>
+        </div>
+		<article>
+		<% if (success) { %>
+  <div><%= success %></div>
+<% } %>
+<% if (error) { %>
+  <div><%= error %> </div>
+<% } %>
+</article>
+
+
+ <div id="dragbasic">   
+
+        <p><div id="drag1" class="drag" style="background-color:orange">胸肌</div>
+		
+        <div id="drag2" class="drag" style="background-color:orange">背肌 </div>
+        <div id="drag3" class="drag" style="background-color:orange">腹肌</div>
+		<div id="drag4" class="drag" style="background-color:orange">肩</div>
+		<div id="drag4" class="drag" style="background-color:orange">腿</div></p>
+		<div id="drag4" class="drag" style="background-color:orange">二頭肌</div>
+		<p><div id="drag4" class="drag" style="background-color:orange">三頭肌</div>
+		<div id="drag4" class="drag" style="background-color:orange">有氧</div>
+		<div id="drag4" class="drag" style="background-color:orange">伸展</div>
+		<div id="drag4" class="drag" style="background-color:orange">休息</div>
+		<div id="drag5" class="drag" style="background-color:orange"></div>
+		</p>
+		<input type="button" class="btn btn-success btn-block" onclick="save();" value="儲存" />
+
+
+
+	</div>
+
+
+<div id="stable" class="table-responsive" data-pattern="" data-add-focus-btn="false">
+<% if (schedule) { %>
+<%-schedule.content %>
+<% } else { %>
+
+<table class="tg" data-role="table" class="ui-responsive"class="table table-small-font table-bordered table-striped" >
+
+    <th class="tg-031e">時段</th>
+    <th class="tg-031e">禮拜日</th>
+	<th class="tg-031e">禮拜一</th>
+    <th class="tg-031e">禮拜二</th>
+    <th class="tg-031e">禮拜三</th>
+    <th class="tg-031e">禮拜四</th>
+    <th class="tg-031e">禮拜五</th>
+    <th class="tg-031e">禮拜六</th>
+ 
+  </tr>
+ 
+  <tr id="l7">
+    <td class="tg-031e">7:00~8:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l8">
+    <td class="tg-031e">8:00~9:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l9">
+    <td class="tg-031e">9:00~10:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l10">
+    <td class="tg-031e">10:00~11:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l11">
+    <td class="tg-031e">11:00~12:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l13">
+    <td class="tg-031e">13:00~14:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l14">
+    <td class="tg-031e">14:00~15:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l15">
+    <td class="tg-031e">15:00~16:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l16">
+    <td class="tg-031e">16:00~17:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+  <tr id="l17">
+    <td class="tg-031e">17:00~18:00</td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+    <td class="tg-4eph"><p></p></td>
+  </tr>
+ 
+</table>
+
+<% } %>
+
+
+</div>
+</div>
+
+
+</body>
+</html>
